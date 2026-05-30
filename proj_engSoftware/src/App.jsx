@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import LoginPage from './pages/LoginPage'
 import AdminPage from './pages/AdminPage'
+import AlunoPage from './pages/AlunoPage'
+import CoordenadorPage from './pages/CoordenadorPage'
+import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
-import Dashboard from './pages/Dashboard'
 
 function App() {
   return (
@@ -11,8 +12,9 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/aluno" element={<AlunoPage />} />
+        <Route path="/coordenador" element={<CoordenadorPage />} />
       </Routes>
     </BrowserRouter>
   )

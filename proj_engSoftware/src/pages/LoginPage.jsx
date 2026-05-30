@@ -21,7 +21,25 @@ function LoginPage() {
       return
     }
 
-    navigate('/dashboard')
+    const {
+      data: { user }
+    } = await supabase.auth.getUser()
+
+    const { data: usuario } = await supabase
+      .from('usuarios')
+      .select('*')
+      .eq('id', user.id)
+      .single()
+
+    if (usuario.perfil === 'administrador') {
+      navigate('/admin')
+    }
+    else if (usuario.perfil === 'coordenador') {
+      navigate('/coordenador')
+    }
+    else {
+      navigate('/aluno')
+    }
   }
 
   return (
