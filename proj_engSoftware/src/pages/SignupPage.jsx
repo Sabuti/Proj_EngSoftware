@@ -45,7 +45,7 @@ function SignupPage() {
 
     alert('Usuário criado com sucesso')
 
-    navigate('/')
+    navigate('/login')
   }
 
   return (
