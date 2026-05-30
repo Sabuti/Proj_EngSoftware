@@ -18,8 +18,13 @@ function AdminPage() {
         .select('*')
 
       const { data: listaTurmas } = await supabase
-        .from('turmas')
-        .select('*')
+        .from('usuarios')
+        .select(`
+            *,
+            turmas (
+            nome
+            )
+        `)
 
       setUsuarios(listaUsuarios || [])
       setDisciplinas(listaDisciplinas || [])

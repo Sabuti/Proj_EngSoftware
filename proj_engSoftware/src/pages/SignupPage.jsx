@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
@@ -7,9 +7,24 @@ function SignupPage() {
   const [password, setPassword] = useState('')
   const [nome, setNome] = useState('')
   const [perfil, setPerfil] = useState('aluno')
-  const [turma, setTurma] = useState('')
+  const [turmas, setTurmas] = useState([])
+  const [turmaId, setTurmaId] = useState('')
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    async function carregarTurmas() {
+      const { data, error } = await supabase
+        .from('turmas')
+        .select('*')
+
+      if (!error) {
+        setTurmas(data)
+      }
+    }
+
+    carregarTurmas()
+  }, [])
 
   async function handleSignup(e) {
     e.preventDefault()
@@ -34,7 +49,7 @@ function SignupPage() {
           nome,
           email,
           perfil,
-          turma
+          turma_id: turmaId
         }
       ])
 
@@ -106,12 +121,18 @@ function SignupPage() {
         <br />
         <br />
 
-        <input
-          type="text"
-          placeholder="Turma"
-          value={turma}
-          onChange={(e) => setTurma(e.target.value)}
-        />
+        <select
+          value={turmaId}
+          onChange={(e) => setTurmaId(e.target.value)}
+        >
+          <option value="">Selecione uma turma</option>
+
+          {turmas.map((turma) => (
+            <option key={turma.id} value={turma.id}>
+              {turma.nome}
+            </option>
+          ))}
+        </select>
 
         <button type="submit">
           Cadastrar

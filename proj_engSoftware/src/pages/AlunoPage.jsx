@@ -17,7 +17,12 @@ function AlunoPage() {
       if (user) {
         const { data } = await supabase
           .from('usuarios')
-          .select('*')
+          .select(`
+            *,
+            turmas (
+              nome
+            )
+          `)
           .eq('id', user.id)
           .single()
 
@@ -66,7 +71,7 @@ function AlunoPage() {
 
         <p>Nome: {dadosUsuario?.nome}</p>
         <p>Perfil: {dadosUsuario?.perfil}</p>
-        <p>Turma: {dadosUsuario?.turma}</p>
+        <p>Turma: {dadosUsuario?.turmas?.nome}</p>
 
         <br />
 
