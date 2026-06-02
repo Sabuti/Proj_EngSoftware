@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import Papa from 'papaparse'
 
 function AlunoPage() {
   const [user, setUser] = useState(null)
@@ -48,6 +49,87 @@ function AlunoPage() {
     carregarDados()
   }, [])
 
+  async function handleFile(event) {
+    const file = event.target.files[0]
+
+    if (!file) return
+
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+
+      complete: async (results) => {
+        console.log(results.data)
+        const { error } = await supabase
+          .from('disciplinas')
+          .upsert(results.data, {
+            onConflict: 'sigla'
+          })
+
+        if (error) {
+          alert(error.message)
+        } else {
+          alert('Grade curricular importada com sucesso')
+        }
+      }
+    })
+  }
+
+  async function handleHistoricoUpload(event) {
+    const file = event.target.files[0]
+
+    if (!file) return
+
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+
+      complete: async (results) => {
+
+        const {
+          data: { user }
+        } = await supabase.auth.getUser()
+
+        const registros = []
+
+        for (const linha of results.data) {
+
+          const { data: disciplina } = await supabase
+            .from('disciplinas')
+            .select('id')
+            .eq('sigla', linha.sigla)
+            .single()
+
+          if (!disciplina) continue
+
+          registros.push({
+            aluno_id: user.id,
+            disciplina_id: disciplina.id,
+            nota: Number(linha.nota),
+            aprovado: linha.aprovado === 'true'
+          })
+        }
+
+        console.log(registros)
+
+        await supabase
+          .from('historico_escolar')
+          .delete()
+          .eq('aluno_id', user.id)
+
+        const { error } = await supabase
+          .from('historico_escolar')
+          .insert(registros)
+
+        if (error) {
+          alert(error.message)
+        } else {
+          alert('Histórico escolar importado com sucesso')
+        }
+      }
+    })
+  }
+
   async function handleLogout() {
     await supabase.auth.signOut()
     window.location.href = '/'
@@ -86,6 +168,29 @@ function AlunoPage() {
             </p>
         </div>
         ))}
+
+        <hr />
+
+        <h2>Importar Grade Curricular</h2>
+
+        <input
+          type="file"
+          accept=".csv"
+          onChange={handleFile}
+        />
+
+        <br />
+
+        <hr />
+
+        <h2>Importar Histórico Escolar</h2>
+
+        <input
+          type="file"
+          accept=".csv"
+          onChange={handleHistoricoUpload}
+        />
+        <br />
 
         <button onClick={handleLogout}>
             Sair

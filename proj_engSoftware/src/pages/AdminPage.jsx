@@ -35,6 +35,11 @@ function AdminPage() {
     carregarDados()
   }, [])
 
+  async function handleLogout() {
+    await supabase.auth.signOut()
+    window.location.href = '/'
+  }
+
   return (
     <div style={{
       maxWidth: '800px',
@@ -63,6 +68,10 @@ function AdminPage() {
             {turma.nome}
           </div>
         ))}
+
+      <button onClick={handleLogout}>
+            Sair
+      </button>
     </div>
   )
 }
