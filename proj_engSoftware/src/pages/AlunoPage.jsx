@@ -35,7 +35,7 @@ function AlunoPage() {
                 nota,
                 disciplinas (
                 nome,
-                codigo
+                sigla
                 )
             `)
             .eq('aluno_id', user.id)
