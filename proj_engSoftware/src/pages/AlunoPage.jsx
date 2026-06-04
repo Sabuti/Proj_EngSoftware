@@ -180,6 +180,16 @@ function AlunoPage() {
     cursor: 'pointer'
   }
 
+  const estiloBotaoSair = {
+    width: '100%',
+    padding: '15px',
+    fontSize: '16px',
+    borderRadius: '8px',
+    border: 'none',
+    cursor: 'pointer',
+    marginTop: 'auto'
+  }
+
   return (
     <div
       style={{
@@ -197,7 +207,8 @@ function AlunoPage() {
           padding: '20px',
           display: 'flex',
           flexDirection: 'column',
-          gap: '10px'
+          gap: '10px',
+          maxHeight: '92vh',
         }}
       >
         <div
@@ -252,12 +263,18 @@ function AlunoPage() {
 
         <button 
           style={estiloBotao}
+          onClick={() => setAba('imports')}>
+          Import de arquivos
+        </button>
+
+        <button 
+          style={estiloBotao}
           onClick={() => setAba('perfil')}>
           Perfil
         </button>
 
         <button 
-          style={estiloBotao}
+          style={estiloBotaoSair}
           onClick={handleLogout}>
           Sair
         </button>
@@ -267,23 +284,42 @@ function AlunoPage() {
         <div
           style={{
             flex: 1,
-            padding: '30px'
+            padding: '30px',
+            backgroundColor: '#f1f5f9'
+          }} 
+        >
+
+        <div
+          style={{
+            backgroundColor: 'white',
+            padding: '30px',
+            borderRadius: '15px',
+            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+            minHeight: '80vh'
           }}
         >
         
         {aba === 'historico' && (
           <>
-            <h1>Histórico Escolar</h1>
+            <table>
+              <thead>
+                <tr>
+                  <th>Disciplina</th>
+                  <th>Nota</th>
+                </tr>
+              </thead>
 
-            {historico.map((item, index) => (
-              <div key={index}>
-                <p>
-                  {item.disciplinas?.nome}
-                  {' - '}
-                  Nota: {item.nota}
-                </p>
-              </div>
-            ))}
+              <hr />
+
+              <tbody>
+                {historico.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.disciplinas?.nome}</td>
+                    <td>{item.nota}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </>
         )}
 
@@ -363,6 +399,32 @@ function AlunoPage() {
             </div>
           </>
         )}
+
+        {aba === 'imports' && (
+          <>
+            <h1>Importações</h1>
+
+            <h2>Grade Curricular</h2>
+
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleFile}
+            />
+
+            <br />
+            <br />
+
+            <h2>Histórico Escolar</h2>
+
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleHistoricoUpload}
+            />
+          </>
+        )}
+        </div>
       </div>
 
     </div>

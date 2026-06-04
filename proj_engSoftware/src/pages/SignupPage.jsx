@@ -58,6 +58,18 @@ function SignupPage() {
 
     const userId = data.user.id
 
+    let turmaSelecionada = turmaId
+
+    if (perfil === 'coordenador') {
+      turmaSelecionada =
+        'e536e9cd-0269-4f78-b91c-55f394981917'
+    }
+
+    else if (perfil === 'administrador') {
+      turmaSelecionada =
+        '9fb15c93-7a97-424c-89aa-ea2f0c0aa12e'
+    }
+
     const { error: dbError } = await supabase
       .from('usuarios')
       .insert([
@@ -66,7 +78,7 @@ function SignupPage() {
           nome,
           email,
           perfil,
-          turma_id: turmaId
+          turma_id: turmaSelecionada
         }
       ])
 
