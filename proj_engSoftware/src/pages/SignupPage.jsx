@@ -9,6 +9,9 @@ function SignupPage() {
   const [perfil, setPerfil] = useState('aluno')
   const [turmas, setTurmas] = useState([])
   const [turmaId, setTurmaId] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [mostrarSenha1, setMostrarSenha1] = useState(false)
+  const [mostrarSenha2, setMostrarSenha2] = useState(false)
 
   const navigate = useNavigate()
 
@@ -28,6 +31,20 @@ function SignupPage() {
 
   async function handleSignup(e) {
     e.preventDefault()
+
+    const emailValido =
+      email.includes('@') &&
+      email.includes('.')
+
+    if (!emailValido) {
+      alert('Digite um email válido')
+      return
+    }
+
+    if (password !== confirmPassword) {
+      alert('As senhas não coincidem')
+      return
+    }
 
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -63,22 +80,33 @@ function SignupPage() {
     navigate('/login')
   }
 
+  const emailValido =
+    email.includes('@') &&
+    email.includes('.com')
+
+  const senhaValida =
+    password.length >= 6
+
+  const senhasIguais =
+    password === confirmPassword
+
   return (
     <div
       style={{
-        maxWidth: '800px',
+        maxWidth: '500px',
         margin: '40px auto',
-        padding: '20px',
-        border: '1px solid #ccc',
-        borderRadius: '10px'
+        padding: '30px',
+        borderRadius: '15px',
+        boxShadow: '0 0 20px rgba(0,0,0,0.1)'
       }}
     >
-      <h1>Cadastro</h1>
+      <h1 style={{ textAlign: 'center' }}>Cadastro</h1>
 
       <form onSubmit={handleSignup}>
+        <label>Nome completo: </label>
+
         <input
           type="text"
-          placeholder="Nome"
           value={nome}
           onChange={(e) => setNome(e.target.value)}
         />
@@ -86,29 +114,90 @@ function SignupPage() {
         <br />
         <br />
 
+        <label>Email: </label>
+
         <input
           type="email"
-          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
+        {email.length > 0 && !emailValido && (
+          <div
+            style={{
+              color: 'red',
+              fontSize: '14px',
+              marginTop: '5px'
+            }}
+          >
+            Email deve conter @ e .com
+          </div>
+        )}
+
         <br />
         <br />
 
+        <label>Senha: </label>
         <input
-          type="password"
+          type={mostrarSenha1 ? 'text' : 'password'}
           placeholder="Senha"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <br />
-        <br />
+        {password.length > 0 && !senhaValida && (
+          <div
+            style={{
+              color: 'red',
+              fontSize: '14px',
+              marginTop: '5px'
+            }}
+          >
+            A senha deve ter pelo menos 6 caracteres
+          </div>
+        )}
+
+        <button
+          type="button"
+          onClick={() => setMostrarSenha1(!mostrarSenha1)}
+        >
+          {mostrarSenha1 ? 'Ocultar' : 'Mostrar'}
+        </button>
 
         <br />
         <br />
 
+        <label>Confirmar senha: </label>
+        <input
+          type={mostrarSenha2 ? 'text' : 'password'}
+          placeholder="Confirmar senha"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+
+        {confirmPassword.length > 0 && !senhasIguais && (
+          <div
+            style={{
+              color: 'red',
+              fontSize: '14px',
+              marginTop: '5px'
+            }}
+          >
+            As senhas não coincidem
+          </div>
+        )} 
+
+        <button
+          type="button"
+          onClick={() => setMostrarSenha2(!mostrarSenha2)}
+        >
+          {mostrarSenha2 ? 'Ocultar' : 'Mostrar'}
+        </button>
+
+        <br />
+        <br />
+
+        <label>Perfil: </label>
         <select
           value={perfil}
           onChange={(e) => setPerfil(e.target.value)}
@@ -118,21 +207,28 @@ function SignupPage() {
           <option value="administrador">Administrador</option>
         </select>
 
+        {perfil === 'aluno' && (
+          <>
+            <br />
+            <br />
+
+            <label>Selecione sua turma: </label>
+            <select
+              value={turmaId}
+              onChange={(e) => setTurmaId(e.target.value)}
+            >
+              <option value="">Selecione uma turma</option>
+
+              {turmas.map((turma) => (
+                <option key={turma.id} value={turma.id}>
+                  {turma.nome}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
         <br />
         <br />
-
-        <select
-          value={turmaId}
-          onChange={(e) => setTurmaId(e.target.value)}
-        >
-          <option value="">Selecione uma turma</option>
-
-          {turmas.map((turma) => (
-            <option key={turma.id} value={turma.id}>
-              {turma.nome}
-            </option>
-          ))}
-        </select>
 
         <button type="submit">
           Cadastrar
