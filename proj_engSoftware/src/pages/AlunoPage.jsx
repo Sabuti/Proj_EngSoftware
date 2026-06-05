@@ -4,13 +4,13 @@ import Papa from 'papaparse'
 import userIcon from '../assets/user.png'
 
 function AlunoPage() {
-  const [user, setUser] = useState(null)
+  const [aba, setAba] = useState('historico')
   const [dadosUsuario, setDadosUsuario] = useState(null)
   const [historico, setHistorico] = useState([])
-  const [aba, setAba] = useState('historico')
   const [pendentes, setPendentes] = useState([])
   const [quantidade, setQuantidade] = useState(5)
   const [recomendadas, setRecomendadas] = useState([])
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     async function carregarDados() {

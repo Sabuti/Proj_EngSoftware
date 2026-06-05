@@ -20,6 +20,7 @@ function SignupPage() {
       const { data, error } = await supabase
         .from('turmas')
         .select('*')
+        .not('nome', 'in', '(turma_admin,turma_coordenadores)')
 
       if (!error) {
         setTurmas(data)
