@@ -106,147 +106,165 @@ function SignupPage() {
   return (
     <div
       style={{
-        maxWidth: '500px',
-        margin: '40px auto',
-        padding: '30px',
-        borderRadius: '15px',
-        boxShadow: '0 0 20px rgba(0,0,0,0.1)'
+        minHeight: '100vh',
+        background: '#610127',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '20px',
+        boxSizing: 'border-box'
       }}
     >
-      <h1 style={{ textAlign: 'center' }}>Cadastro</h1>
+      <div
+        style={{
+          maxWidth: '500px',
+          margin: '40px auto',
+          padding: '30px',
+          borderRadius: '15px',
+          background: '#ffffff',
+          boxShadow: '0 0 20px rgba(255, 255, 255, 0.1)'
+        }}
+      >
+        <h1 style={{ textAlign: 'center' }}>Cadastro</h1>
 
-      <form onSubmit={handleSignup}>
-        <label>Nome completo: </label>
+        <form onSubmit={handleSignup}>
+          <label style={{ display: 'block', marginBottom: '5px' }}>Digite seu nome completo: </label>
 
-        <input
-          type="text"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-        />
+          <input
+            type="text"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            style={{ width: '95%', padding: '5px', marginBottom: '5px' }}
+          />
 
-        <br />
-        <br />
+          <br />
 
-        <label>Email: </label>
+          <label style={{ display: 'block', marginBottom: '5px' }}>Digite seu email: </label>
 
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={{ width: '95%', padding: '5px', marginBottom: '5px' }}
+          />
 
-        {email.length > 0 && !emailValido && (
-          <div
-            style={{
-              color: 'red',
-              fontSize: '14px',
-              marginTop: '5px'
-            }}
-          >
-            Email deve conter @ e .com
-          </div>
-        )}
-
-        <br />
-        <br />
-
-        <label>Senha: </label>
-        <input
-          type={mostrarSenha1 ? 'text' : 'password'}
-          placeholder="Senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        {password.length > 0 && !senhaValida && (
-          <div
-            style={{
-              color: 'red',
-              fontSize: '14px',
-              marginTop: '5px'
-            }}
-          >
-            A senha deve ter pelo menos 6 caracteres
-          </div>
-        )}
-
-        <button
-          type="button"
-          onClick={() => setMostrarSenha1(!mostrarSenha1)}
-        >
-          {mostrarSenha1 ? 'Ocultar' : 'Mostrar'}
-        </button>
-
-        <br />
-        <br />
-
-        <label>Confirmar senha: </label>
-        <input
-          type={mostrarSenha2 ? 'text' : 'password'}
-          placeholder="Confirmar senha"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-
-        {confirmPassword.length > 0 && !senhasIguais && (
-          <div
-            style={{
-              color: 'red',
-              fontSize: '14px',
-              marginTop: '5px'
-            }}
-          >
-            As senhas não coincidem
-          </div>
-        )} 
-
-        <button
-          type="button"
-          onClick={() => setMostrarSenha2(!mostrarSenha2)}
-        >
-          {mostrarSenha2 ? 'Ocultar' : 'Mostrar'}
-        </button>
-
-        <br />
-        <br />
-
-        <label>Perfil: </label>
-        <select
-          value={perfil}
-          onChange={(e) => setPerfil(e.target.value)}
-        >
-          <option value="aluno">Aluno</option>
-          <option value="coordenador">Coordenador</option>
-          <option value="administrador">Administrador</option>
-        </select>
-
-        {perfil === 'aluno' && (
-          <>
-            <br />
-            <br />
-
-            <label>Selecione sua turma: </label>
-            <select
-              value={turmaId}
-              onChange={(e) => setTurmaId(e.target.value)}
+          {email.length > 0 && !emailValido && (
+            <div
+              style={{
+                color: 'red',
+                fontSize: '14px',
+                marginTop: '5px'
+              }}
             >
-              <option value="">Selecione uma turma</option>
+              Email deve conter @ e .com
+            </div>
+          )}
 
-              {turmas.map((turma) => (
-                <option key={turma.id} value={turma.id}>
-                  {turma.nome}
-                </option>
-              ))}
-            </select>
-          </>
-        )}
-        <br />
-        <br />
+          <br />
 
-        <button type="submit">
-          Cadastrar
-        </button>
-      </form>
+          <label style={{ display: 'block', marginBottom: '5px' }}>Digite sua senha: </label>
+          <input
+            type={mostrarSenha1 ? 'text' : 'password'}
+            placeholder="Senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={{ width: '82%', padding: '5px', marginBottom: '5px' }}
+          />
+
+          <button
+            type="button"
+            onClick={() => setMostrarSenha1(!mostrarSenha1)}
+          >
+            {mostrarSenha1 ? 'Ocultar' : 'Mostrar'}
+          </button>
+
+          {password.length > 0 && !senhaValida && (
+            <div
+              style={{
+                color: 'red',
+                fontSize: '14px'
+              }}
+            >
+              A senha deve ter pelo menos 6 caracteres
+            </div>
+          )}
+
+          <br />
+
+          <label style={{ display: 'block', marginBottom: '5px' }}>Confirme sua senha: </label>
+          <input
+            type={mostrarSenha2 ? 'text' : 'password'}
+            placeholder="Confirmar senha"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            style={{ width: '82%', padding: '5px', marginBottom: '5px' }}
+          />
+
+          <button
+            type="button"
+            onClick={() => setMostrarSenha2(!mostrarSenha2)}
+          >
+            {mostrarSenha2 ? 'Ocultar' : 'Mostrar'}
+          </button>
+
+          {confirmPassword.length > 0 && !senhasIguais && (
+            <div
+              style={{
+                color: 'red',
+                fontSize: '14px'
+              }}
+            >
+              As senhas não coincidem
+            </div>
+          )} 
+
+          <br />
+
+          <label style={{ display: 'block', marginBottom: '5px' }}>Selecione o seu perfil: </label>
+          <select
+            value={perfil}
+            onChange={(e) => setPerfil(e.target.value)}
+            style={{ width: '97%', padding: '5px', marginBottom: '5px' }}
+          >
+            <option value="aluno">Aluno</option>
+            <option value="coordenador">Coordenador</option>
+            <option value="administrador">Administrador</option>
+          </select>
+
+          {perfil === 'aluno' && (
+            <>
+              <br />
+              <br />
+
+              <label style={{ display: 'block', marginBottom: '5px' }}>Selecione sua turma: </label>
+              <select
+                value={turmaId}
+                onChange={(e) => setTurmaId(e.target.value)}
+                style={{ width: '97%', padding: '5px', marginBottom: '5px' }}
+              >
+                <option value="">Selecione uma turma</option>
+
+                {turmas.map((turma) => (
+                  <option key={turma.id} value={turma.id}>
+                    {turma.nome}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
+          <br />
+          <br />
+
+          <button type="submit"
+            style={{ backgroundColor: '#263E5F', padding: '10px 226px', border: 'none', borderRadius: '5px', cursor: 'pointer', color: 'white' }}>
+            Cadastrar
+          </button>
+
+          <h4>
+            Já tem uma conta? <a href="/login">Faça login</a>
+          </h4>
+        </form>
+      </div>
     </div>
   )
 }

@@ -190,6 +190,12 @@ function AlunoPage() {
     marginTop: 'auto'
   }
 
+  const estiloTabela={
+    textAlign: 'left',
+    padding: '12px',
+    borderBottom: '2px solid #ddd'
+  }
+
   return (
     <div
       style={{
@@ -202,7 +208,7 @@ function AlunoPage() {
       <div
         style={{
           width: '250px',
-          backgroundColor: '#187488da',
+          backgroundColor: '#610127',
           color: 'white', 
           padding: '20px',
           display: 'flex',
@@ -285,7 +291,7 @@ function AlunoPage() {
           style={{
             flex: 1,
             padding: '30px',
-            backgroundColor: '#f1f5f9'
+            backgroundColor: '#263E5F'
           }} 
         >
 
@@ -298,39 +304,31 @@ function AlunoPage() {
             minHeight: '80vh'
           }}
         >
-        
+
         {aba === 'historico' && (
           <>
-            <table>
+            <table
+              style={{
+                  width: '100%',
+                  borderCollapse: 'collapse',
+                  marginTop: '20px'
+                }}>
               <thead>
                 <tr>
-                  <th>Disciplina</th>
-                  <th>Nota</th>
+                  <th style={estiloTabela}>Disciplina</th>
+                  <th style={estiloTabela}>Nota</th>
                 </tr>
               </thead>
-
-              <hr />
 
               <tbody>
                 {historico.map((item, index) => (
                   <tr key={index}>
-                    <td>{item.disciplinas?.nome}</td>
-                    <td>{item.nota}</td>
+                    <td style={estiloTabela}>{item.disciplinas?.nome}</td>
+                    <td style={estiloTabela}>{item.nota.toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </>
-        )}
-
-        {aba === 'perfil' && (
-          <>
-            <h1>Perfil</h1>
-
-            <p>Email: {user?.email}</p>
-            <p>Nome: {dadosUsuario?.nome}</p>
-            <p>Perfil: {dadosUsuario?.perfil}</p>
-            <p>Turma: {dadosUsuario?.turmas?.nome}</p>
           </>
         )}
 
@@ -424,6 +422,18 @@ function AlunoPage() {
             />
           </>
         )}
+
+        {aba === 'perfil' && (
+          <>
+            <h1>Perfil</h1>
+
+            <p>Email: {user?.email}</p>
+            <p>Nome: {dadosUsuario?.nome}</p>
+            <p>Perfil: {dadosUsuario?.perfil}</p>
+            <p>Turma: {dadosUsuario?.turmas?.nome}</p>
+          </>
+        )}
+        
         </div>
       </div>
 

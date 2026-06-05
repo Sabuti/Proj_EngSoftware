@@ -200,7 +200,7 @@ function CoordenadorPage() {
       <div
         style={{
           width: '250px',
-          backgroundColor: '#1e293b',
+          backgroundColor: '#610127',
           color: 'white',
           padding: '20px',
           display: 'flex',
@@ -221,9 +221,7 @@ function CoordenadorPage() {
 
         <button
           style={estiloBotao}
-          onClick={() => {
-            setAba('desempenho')
-          }}
+          onClick={() => setAba('desempenho')}
         >
           Desempenho da Turma
         </button>
@@ -249,7 +247,7 @@ function CoordenadorPage() {
         style={{
           flex: 1,
           padding: '40px',
-          backgroundColor: '#f5f5f5'
+          backgroundColor: '#263E5F'
         }}
       >
 

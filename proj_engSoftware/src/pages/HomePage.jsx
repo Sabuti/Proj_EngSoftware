@@ -7,8 +7,7 @@ function HomePage() {
     <div
       style={{
         minHeight: '100vh',
-        background:
-          'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)',
+        background: '#610127',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -66,8 +65,8 @@ function HomePage() {
             <button
               onClick={() => navigate('/login')}
               style={{
-                background: '#2563eb',
-                color: 'white',
+                background: '#ffffff',
+                color: 'black',
                 border: 'none',
                 padding: '14px 30px',
                 borderRadius: '10px',
@@ -98,7 +97,7 @@ function HomePage() {
 
         <div
           style={{
-            background: 'rgba(255,255,255,0.08)',
+            background: '#263E5F',
             backdropFilter: 'blur(12px)',
             borderRadius: '20px',
             padding: '35px',
