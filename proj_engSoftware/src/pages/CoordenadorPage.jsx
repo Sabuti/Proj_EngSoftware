@@ -190,6 +190,12 @@ function CoordenadorPage() {
     cursor: 'pointer',
   }
 
+  const estiloTabela={
+    textAlign: 'left',
+    padding: '12px',
+    borderBottom: '2px solid #ddd'
+  }
+
   return (
     <div
       style={{
@@ -306,31 +312,30 @@ function CoordenadorPage() {
                     >
                       <h4>Histórico Escolar</h4>
 
-                      {historicoAluno.length === 0 ? (
-                        <p>Nenhuma disciplina encontrada.</p>
-                      ) : (
-                        historicoAluno.map((item, index) => (
-                          <div
-                            key={index}
-                            style={{
-                              padding: '5px 0',
-                              borderBottom: '1px solid #ddd'
-                            }}
-                          >
-                            <strong>
-                              {item.disciplinas?.sigla}
-                            </strong>
+                      <table
+                        style={{
+                            width: '100%',
+                            borderCollapse: 'collapse',
+                            marginTop: '20px'
+                          }}>
+                        <thead>
+                          <tr>
+                            <th style={estiloTabela}>Sigla</th>
+                            <th style={estiloTabela}>Disciplina</th>
+                            <th style={estiloTabela}>Nota</th>
+                          </tr>
+                        </thead>
 
-                            {' - '}
-
-                            {item.disciplinas?.nome}
-
-                            {' | Nota: '}
-
-                            {item.nota}
-                          </div>
-                        ))
-                      )}
+                        <tbody>
+                          {historicoAluno.map((item, index) => (
+                            <tr key={index}>
+                              <td style={estiloTabela}>{item.disciplinas?.sigla}</td>
+                              <td style={estiloTabela}>{item.disciplinas?.nome}</td>
+                              <td style={estiloTabela}>{item.nota.toFixed(2)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   )}
                 </div>
