@@ -90,7 +90,8 @@ function AlunoPage() {
           })
 
         if (error) {
-          alert(error.message)
+          console.log(error)
+          alert('Erro ao importar o arquivo.')
         } else {
           alert('Grade curricular importada com sucesso')
         }
@@ -145,7 +146,8 @@ function AlunoPage() {
           .insert(registros)
 
         if (error) {
-          alert(error.message)
+          console.log(error)
+          alert('Erro ao importar o arquivo.')
         } else {
           alert('Histórico escolar importado com sucesso')
         }

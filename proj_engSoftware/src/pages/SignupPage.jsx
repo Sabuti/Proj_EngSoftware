@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 function SignupPage() {
@@ -261,7 +261,7 @@ function SignupPage() {
           </button>
 
           <h4>
-            Já tem uma conta? <a href="/login">Faça login</a>
+            Já tem uma conta? <Link to="/login"> Faça login </Link>
           </h4>
         </form>
       </div>
