@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import Papa from 'papaparse'
 import userIcon from '../assets/user.png'
+import * as pdfjsLib from 'pdfjs-dist'
+import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker
 
 function AlunoPage() {
   const [aba, setAba] = useState('historico')
@@ -104,55 +108,90 @@ function AlunoPage() {
 
     if (!file) return
 
-    Papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
+    const arrayBuffer = await file.arrayBuffer()
 
-      complete: async (results) => {
+    const pdf = await pdfjsLib.getDocument({
+      data: arrayBuffer
+    }).promise
 
-        const {
-          data: { user }
-        } = await supabase.auth.getUser()
+    let texto = ''
 
-        const registros = []
+    for (let i = 1; i <= pdf.numPages; i++) {
 
-        for (const linha of results.data) {
+      const page = await pdf.getPage(i)
 
-          const { data: disciplina } = await supabase
-            .from('disciplinas')
-            .select('id')
-            .eq('sigla', linha.sigla)
-            .single()
+      const content =
+        await page.getTextContent()
 
-          if (!disciplina) continue
+      texto += content.items
+        .map(item => item.str)
+        .join(' ')
+    }
 
-          registros.push({
-            aluno_id: user.id,
-            disciplina_id: disciplina.id,
-            nota: Number(linha.nota),
-            aprovado: linha.aprovado === 'true'
-          })
-        }
+    const textoLimpo = texto
+      .replace('sigla,nota,aprovado', '')
+      .trim()
 
-        console.log(registros)
+    const linhas = textoLimpo.match(
+      /[A-Za-z]+,\d+(\.\d+)?,(true|false)/g
+    )
 
-        await supabase
-          .from('historico_escolar')
-          .delete()
-          .eq('aluno_id', user.id)
+    const dados = linhas.map((linha) => {
 
-        const { error } = await supabase
-          .from('historico_escolar')
-          .insert(registros)
+      const [sigla, nota, aprovado] =
+        linha.split(',')
 
-        if (error) {
-          console.log(error)
-          alert('Erro ao importar o arquivo.')
-        } else {
-          alert('Histórico escolar importado com sucesso')
-        }
+      return {
+        sigla,
+        nota,
+        aprovado
       }
     })
+
+    console.log(dados)
+
+    const registros = []
+
+    const {
+      data: { user }
+    } = await supabase.auth.getUser()
+
+    for (const linha of dados) {
+      const { data: disciplina } =
+        await supabase
+          .from('disciplinas')
+          .select('id')
+          .eq('sigla', linha.sigla)
+          .single()
+
+      if (!disciplina) continue
+
+      registros.push({
+        aluno_id: user.id,
+        disciplina_id: disciplina.id,
+        nota: Number(linha.nota),
+        aprovado:
+          linha.aprovado === 'true'
+      })
+    }
+
+    console.log(registros)
+
+    await supabase
+      .from('historico_escolar')
+      .delete()
+      .eq('aluno_id', user.id)
+
+    const { error } = await supabase
+      .from('historico_escolar')
+      .insert(registros)
+
+    if (error) {
+      console.log(error)
+      alert('Erro ao importar o histórico escolar.')
+    } else {
+      alert('Histórico escolar importado com sucesso')
+    }
   }
 
   async function handleLogout() {
@@ -404,7 +443,7 @@ function AlunoPage() {
           <>
             <h1>Importações</h1>
 
-            <h2>Grade Curricular</h2>
+            <h2>Grade Curricular (arquivo .csv)</h2>
 
             <input
               type="file"
@@ -415,11 +454,11 @@ function AlunoPage() {
             <br />
             <br />
 
-            <h2>Histórico Escolar</h2>
+            <h2>Histórico Escolar (arquivo .pdf)</h2>
 
             <input
               type="file"
-              accept=".csv"
+              accept=".pdf"
               onChange={handleHistoricoUpload}
             />
           </>
