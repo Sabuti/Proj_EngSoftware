@@ -136,6 +136,13 @@ function AlunoPage() {
       /[A-Za-z]+,\d+(\.\d+)?,(true|false)/g
     )
 
+    if (!linhas) {
+      alert(
+        'Formato de histórico inválido. Verifique se o PDF contém sigla, nota e aprovado.'
+      )
+      return
+    }
+
     const dados = linhas.map((linha) => {
 
       const [sigla, nota, aprovado] =
