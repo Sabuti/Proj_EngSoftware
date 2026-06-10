@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import userIcon from '../assets/user.png'
 
 function CoordenadorPage() {
   const [aba, setAba] = useState('alunos')
@@ -196,6 +197,16 @@ function CoordenadorPage() {
     borderBottom: '2px solid #ddd'
   }
 
+  const estiloBotaoSair = {
+    width: '100%',
+    padding: '15px',
+    fontSize: '16px',
+    borderRadius: '8px',
+    border: 'none',
+    cursor: 'pointer',
+    marginTop: 'auto'
+  }
+
   return (
     <div
       style={{
@@ -211,12 +222,48 @@ function CoordenadorPage() {
           padding: '20px',
           display: 'flex',
           flexDirection: 'column',
-          gap: '15px',
-          marginBottom: '20px' // Repensar
+          gap: '10px',
+          maxHeight: '100vh',
         }}
       > 
       {/* Barra lateral de navegação */}
-        <h2>Coordenador</h2>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            marginBottom: '20px'
+          }}
+        >
+          <img
+            src={userIcon}
+            alt="User Icon"
+            style={{
+              width: '45px',
+              height: '45px',
+              borderRadius: '50%'
+            }}
+          />
+
+          <div>
+            <div
+              style={{
+                fontWeight: 'bold'
+              }}
+            >
+              {dadosUsuario?.nome}
+            </div>
+
+            <div
+              style={{
+                fontSize: '12px',
+                opacity: 0.8
+              }}
+            >
+              Coordenador
+            </div>
+          </div>
+        </div>
 
         <button
           style={estiloBotao}
@@ -239,10 +286,8 @@ function CoordenadorPage() {
           Perfil
         </button>
 
-        <div style={{ flex: 1 }} />
-
         <button
-          style={estiloBotao}
+          style={estiloBotaoSair}
           onClick={handleLogout}
         >
           Sair
@@ -252,7 +297,7 @@ function CoordenadorPage() {
       <div
         style={{
           flex: 1,
-          padding: '40px',
+          padding: '30px',
           backgroundColor: '#263E5F'
         }}
       >

@@ -262,7 +262,7 @@ function AlunoPage() {
           display: 'flex',
           flexDirection: 'column',
           gap: '10px',
-          maxHeight: '92vh',
+          maxHeight: '100vh',
         }}
       >
         <div

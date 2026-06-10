@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import userIcon from '../assets/user.png'
 
 function AdminPage() {
   const [aba, setAba] = useState('usuarios')
@@ -108,7 +109,7 @@ function AdminPage() {
             display: 'flex',
             flexDirection: 'column',
             gap: '10px',
-            maxHeight: '92vh',
+            maxHeight: '100vh',
           }}
         >
           <div
@@ -119,7 +120,17 @@ function AdminPage() {
               marginBottom: '20px'
             }}
           >
-  
+
+            <img
+              src={userIcon}
+              alt="User Icon"
+              style={{
+                width: '45px',
+                height: '45px',
+                borderRadius: '50%'
+              }}
+            />
+
             <div>
               <div
                 style={{
@@ -180,7 +191,6 @@ function AdminPage() {
               padding: '30px',
               borderRadius: '15px',
               boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-              minHeight: '80vh'
             }}
           >
           
@@ -280,7 +290,6 @@ function AdminPage() {
 
           </div>
         </div>
-  
       </div>
   )
 }
